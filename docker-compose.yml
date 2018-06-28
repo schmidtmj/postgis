@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    build: '.'
+    volumes:
+      - ./osm-web/openstreetmap-website:/openstreetmap-website
+      - ../../data/postgres:$DB_DATA
+    environment:
+      - PGUSER=$DB_USER
+      - PGPASSWORD=$DB_PASS
+      - DB_SUBNET=$DB_SUBNET
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+    networks:
+      - mynet
+networks:
+  mynet:
+    ipam:
+      driver: default
+      config:
+        - subnet: $DB_SUBNET
